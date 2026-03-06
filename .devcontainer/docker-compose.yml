@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    volumes:
+      - ..:/workspaces:cached
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_PASS=p
+      - DB_NAME=ATM
+    depends_on:
+      - db
+    command: /bin/sh -c "while sleep 1000; do :; done"
+
+  db:
+    image: mysql:8.0
+    container_name: MidTermProject-db
+    environment:
+      MYSQL_ROOT_PASSWORD: p
+      MYSQL_DATABASE: ATM
+    ports:
+      - "3307:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+
+volumes:
+  db-data:
+  
