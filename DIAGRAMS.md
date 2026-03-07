@@ -193,19 +193,3 @@ graph TB
 | MySQL 8.0 | `MidTermProject-db` | 3306 (internal), 3307 (host) | Persistent data via `db-data` Docker volume |
 | Docker Network | `devcontainer_default` | — | Enables container-to-container communication via DNS |
 
----
-
-## 5. Database Schema Diagram
-
-```mermaid
-erDiagram
-    accounts {
-        INT AccountNumber PK "AUTO_INCREMENT, starts at 100"
-        VARCHAR_50 Login UK "UNIQUE, NOT NULL"
-        VARCHAR_5 Pin "NOT NULL, must be 5 digits"
-        VARCHAR_100 HolderName "NOT NULL"
-        DECIMAL_10_2 Balance "DEFAULT 0.00"
-        VARCHAR_20 Status "DEFAULT Active"
-        BOOLEAN IsAdmin "DEFAULT FALSE"
-    }
-```
