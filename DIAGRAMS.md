@@ -71,7 +71,7 @@ graph TD
 
 ---
 
-## 2. Application Flow Diagram
+## 2. System Diagram for entire application
 
 ```mermaid
 flowchart TD

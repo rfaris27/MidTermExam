@@ -14,6 +14,8 @@ A C++ console-based ATM system connected to a MySQL database running in Docker. 
 | `CustomerOptions.h` | Customer menu — Withdraw, Deposit, Display Balance |
 | `AdminOptions.h` | Admin menu — Create, Delete, Update, Search accounts |
 | `schema.sql` | Database table creation and seed data |
+| `db_dump.sql` | MySQL dump file to recreate the database |
+| `DIAGRAMS.md` | Use case, component, and deployment diagrams |
 | `.devcontainer/docker-compose.yml` | Docker setup for app + MySQL containers |
 | `.devcontainer/Dockerfile` | Dev container with C++ and MySQL libraries |
 
@@ -62,6 +64,16 @@ For the VS Code SQL extension (connecting from host machine), use `127.0.0.1:330
 - Duplicate login detection on account creation
 - Admin accounts protected from deletion
 - Encapsulation via private class members with getters/setters
+
+## Recreating the Database
+To recreate the database from the dump file, run:
+```bash
+mysql -u root -p ATM < db_dump.sql
+```
+This will create the `accounts` table and insert all existing data.
+
+## Diagrams
+All use case, system, component, and deployment diagrams are in [`DIAGRAMS.md`](DIAGRAMS.md). GitHub renders them automatically as visual diagrams.
 
 ## Progress
 
