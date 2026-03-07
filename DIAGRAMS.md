@@ -76,7 +76,7 @@ graph TD
 ```mermaid
 flowchart TD
     A[Start Application] --> B[Connect to MySQL Database]
-    B --> C[Display Login Screen]
+    B --> C[Display Login Screen - Any User]
     C --> D[Enter Login & Pin]
     D --> E{Credentials Valid?}
     E -- No --> F[Display Error]
@@ -89,7 +89,8 @@ flowchart TD
     I1 -- 1 --> I2[Withdraw Cash]
     I1 -- 3 --> I3[Deposit Cash]
     I1 -- 4 --> I4[Display Balance]
-    I1 -- 5 --> C
+    I1 -- 5 --> LOGOUT1[Logout]
+    LOGOUT1 --> C
     I2 --> I
     I3 --> I
     I4 --> I
@@ -119,7 +120,8 @@ flowchart TD
     L5 --> L5a[Enter Account Number]
     L5a --> L5b[Display Account Info]
     L5b --> L
-    L1 -- 6 --> C
+    L1 -- 6 --> LOGOUT2[Logout]
+    LOGOUT2 --> C
 ```
 
 ---
