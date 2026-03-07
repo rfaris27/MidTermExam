@@ -162,89 +162,94 @@ void updateAccount(sql::Connection *con) {
         return;
     }
 
-    std::cout << "Current info — Name: " << res->getString("HolderName")
-              << ", Login: " << res->getString("Login")
-              << ", Balance: " << res->getDouble("Balance")
-              << ", Status: " << res->getString("Status") << std::endl;
+    std::cout << "\nAccount # " << res->getInt("AccountNumber") << std::endl;
+    std::cout << std::fixed << std::setprecision(2);
+    std::cout << "Holder: " << res->getString("HolderName") << std::endl;
+    std::cout << "Balance: " << res->getDouble("Balance") << std::endl;
+    std::cout << "Status: " << res->getString("Status") << std::endl;
+    std::cout << "Login: " << res->getString("Login") << std::endl;
+    std::cout << "Pin Code: " << res->getString("Pin") << std::endl;
 
     delete res;
     delete check;
 
-    std::cout << "\nWhat do you want to update?" << std::endl;
-    std::cout << "1----Name" << std::endl;
-    std::cout << "2----Pin" << std::endl;
-    std::cout << "3----Balance" << std::endl;
-    std::cout << "4----Status" << std::endl;
-    std::cout << "Enter your choice: ";
+    std::cout << "\nEnter new values (press Enter to keep current and move to next):" << std::endl;
 
-    int choice;
-    std::cin >> choice;
+    std::string holder, pin, status, login, balanceStr;
+    std::cin.ignore();
+
+    std::cout << "Holder: ";
+    std::getline(std::cin, holder);
+    std::cout << "Balance: ";
+    std::getline(std::cin, balanceStr);
+    std::cout << "Status: ";
+    std::getline(std::cin, status);
+    std::cout << "Login: ";
+    std::getline(std::cin, login);
+    std::cout << "Pin Code: ";
+    std::getline(std::cin, pin);
+
+    if (!pin.empty()) {
+        bool validPin = (pin.length() == 5);
+        if (validPin) {
+            for (int i = 0; i < 5; i++) {
+                if (!isdigit(pin[i])) {
+                    validPin = false;
+                    break;
+                }
+            }
+        }
+        if (!validPin) {
+            std::cout << "Error: Pin Code must be an integer of length 5. Update cancelled." << std::endl;
+            return;
+        }
+    }
 
     sql::PreparedStatement *pstmt;
 
-    switch (choice) {
-        case 1: {
-            std::string name;
-            std::cin.ignore();
-            std::cout << "Enter new name: ";
-            std::getline(std::cin, name);
-            pstmt = con->prepareStatement(
-                "UPDATE accounts SET HolderName = ? WHERE AccountNumber = ?");
-            pstmt->setString(1, name);
-            pstmt->setInt(2, accountNumber);
-            pstmt->executeUpdate();
-            delete pstmt;
-            std::cout << "Name updated." << std::endl;
-            break;
-        }
-        case 2: {
-            std::string pin;
-            std::cin.ignore();
-            std::cout << "Enter new pin (5 digits): ";
-            std::getline(std::cin, pin);
-            if (pin.length() != 5) {
-                std::cout << "Error: Pin must be exactly 5 digits." << std::endl;
-                return;
-            }
-            pstmt = con->prepareStatement(
-                "UPDATE accounts SET Pin = ? WHERE AccountNumber = ?");
-            pstmt->setString(1, pin);
-            pstmt->setInt(2, accountNumber);
-            pstmt->executeUpdate();
-            delete pstmt;
-            std::cout << "Pin updated." << std::endl;
-            break;
-        }
-        case 3: {
-            double balance;
-            std::cout << "Enter new balance: ";
-            std::cin >> balance;
-            pstmt = con->prepareStatement(
-                "UPDATE accounts SET Balance = ? WHERE AccountNumber = ?");
-            pstmt->setDouble(1, balance);
-            pstmt->setInt(2, accountNumber);
-            pstmt->executeUpdate();
-            delete pstmt;
-            std::cout << "Balance updated." << std::endl;
-            break;
-        }
-        case 4: {
-            std::string status;
-            std::cin.ignore();
-            std::cout << "Enter new status (Active/Inactive): ";
-            std::getline(std::cin, status);
-            pstmt = con->prepareStatement(
-                "UPDATE accounts SET Status = ? WHERE AccountNumber = ?");
-            pstmt->setString(1, status);
-            pstmt->setInt(2, accountNumber);
-            pstmt->executeUpdate();
-            delete pstmt;
-            std::cout << "Status updated." << std::endl;
-            break;
-        }
-        default:
-            std::cout << "Invalid choice." << std::endl;
+    if (!holder.empty()) {
+        pstmt = con->prepareStatement(
+            "UPDATE accounts SET HolderName = ? WHERE AccountNumber = ?");
+        pstmt->setString(1, holder);
+        pstmt->setInt(2, accountNumber);
+        pstmt->executeUpdate();
+        delete pstmt;
     }
+    if (!balanceStr.empty()) {
+        double balance = std::stod(balanceStr);
+        pstmt = con->prepareStatement(
+            "UPDATE accounts SET Balance = ? WHERE AccountNumber = ?");
+        pstmt->setDouble(1, balance);
+        pstmt->setInt(2, accountNumber);
+        pstmt->executeUpdate();
+        delete pstmt;
+    }
+    if (!status.empty()) {
+        pstmt = con->prepareStatement(
+            "UPDATE accounts SET Status = ? WHERE AccountNumber = ?");
+        pstmt->setString(1, status);
+        pstmt->setInt(2, accountNumber);
+        pstmt->executeUpdate();
+        delete pstmt;
+    }
+    if (!login.empty()) {
+        pstmt = con->prepareStatement(
+            "UPDATE accounts SET Login = ? WHERE AccountNumber = ?");
+        pstmt->setString(1, login);
+        pstmt->setInt(2, accountNumber);
+        pstmt->executeUpdate();
+        delete pstmt;
+    }
+    if (!pin.empty()) {
+        pstmt = con->prepareStatement(
+            "UPDATE accounts SET Pin = ? WHERE AccountNumber = ?");
+        pstmt->setString(1, pin);
+        pstmt->setInt(2, accountNumber);
+        pstmt->executeUpdate();
+        delete pstmt;
+    }
+
+    std::cout << "Account updated successfully." << std::endl;
 }
 
 void adminOptions(sql::Connection *con, Account &account) {
