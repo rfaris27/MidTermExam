@@ -1,9 +1,11 @@
-# MidTermExam — ATM Console Application I will be documenting each steps during this process to keep truck of my work 
+# MidTermExam — ATM Console Application 
+
+I will be documenting each steps during this process to keep track of my work 
 
 ## Overview
 A C++ console-based ATM system connected to a MySQL database running in Docker. Supports two user types: Customers and Administrators.
 
-##Project Structure
+Project Structure
 | File | Purpose |
 |------|---------|
 | `main.cpp` | Entry point — DB connection, login loop, menu routing |
@@ -13,7 +15,7 @@ A C++ console-based ATM system connected to a MySQL database running in Docker. 
 | `.devcontainer/docker-compose.yml` | Docker setup for app + MySQL containers |
 | `.devcontainer/Dockerfile` | Dev container with C++ and MySQL libraries |
 
-## Setup
+Setup
 1. Open the project in VS Code with the Dev Containers extension
 2. Reopen in container (it uses `docker-compose.yml`)
 3. Run `schema.sql` against the MySQL database to create the `accounts` table
@@ -22,7 +24,7 @@ A C++ console-based ATM system connected to a MySQL database running in Docker. 
    g++ -o atm_app main.cpp -lmysqlcppconn && ./atm_app
    ```
 
-## Database Connection
+Database Connection
 - **Host:** `db` (Docker service name, used inside the dev container)
 - **Port:** `3306`
 - **User:** `root`
@@ -31,7 +33,7 @@ A C++ console-based ATM system connected to a MySQL database running in Docker. 
 
 For the VS Code SQL extension (connecting from host machine), use `127.0.0.1:3307`.
 
-## Progress
+ Progress
 
 - [x] Docker environment setup (app + MySQL containers)
 - [x] Database schema (`accounts` table)

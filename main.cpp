@@ -5,16 +5,8 @@
 #include <iostream>
 #include "Account.h"
 #include "Login.h"
-
-void customerMenu(sql::Connection *con, Account &account) {
-    std::cout << "Welcome, " << account.getHolderName() << "!" << std::endl;
-    std::cout << "Customer menu coming soon..." << std::endl;
-}
-
-void adminMenu(sql::Connection *con, Account &account) {
-    std::cout << "Welcome " << account.getHolderName() << "!" << std::endl;
-    std::cout << "Admin Options coming soon..." << std::endl;
-}
+#include "CustomerOptions.h"
+#include "AdminOptions.h"
 
 int main() {
     try {
@@ -32,9 +24,9 @@ int main() {
 
             if (loginUser(con, account)) {
                 if (account.isAdmin()) {
-                    adminMenu(con, account);
+                    adminOptions(con, account);
                 } else {
-                    customerMenu(con, account);
+                    customerOptions(con, account);
                 }
             } else {
                 std::cout << "Error: Invalid login or pin." << std::endl;
