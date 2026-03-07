@@ -7,11 +7,23 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <sstream>
 #include "Account.h"
+
+std::string formatWithCommas(double value) {
+    long long intPart = static_cast<long long>(value);
+    std::string str = std::to_string(intPart);
+    int pos = static_cast<int>(str.length()) - 3;
+    while (pos > 0) {
+        str.insert(pos, ",");
+        pos -= 3;
+    }
+    return str;
+}
 
 void searchAccount(sql::Connection *con) {
     int accountNumber;
-    std::cout << "Enter account number to search: ";
+    std::cout << "Enter Account number: ";
     std::cin >> accountNumber;
 
     sql::PreparedStatement *pstmt = con->prepareStatement(
@@ -20,13 +32,13 @@ void searchAccount(sql::Connection *con) {
     sql::ResultSet *res = pstmt->executeQuery();
 
     if (res->next()) {
-        std::cout << "\n--- Account Found ---" << std::endl;
-        std::cout << "Account #" << res->getInt("AccountNumber") << std::endl;
-        std::cout << "Login: " << res->getString("Login") << std::endl;
-        std::cout << "Name: " << res->getString("HolderName") << std::endl;
-        std::cout << std::fixed << std::setprecision(2);
-        std::cout << "Balance: " << res->getDouble("Balance") << std::endl;
+        std::cout << "\nThe account information is:" << std::endl;
+        std::cout << "Account # " << res->getInt("AccountNumber") << std::endl;
+        std::cout << "Holder: " << res->getString("HolderName") << std::endl;
+        std::cout << "Balance: " << formatWithCommas(res->getDouble("Balance")) << std::endl;
         std::cout << "Status: " << res->getString("Status") << std::endl;
+        std::cout << "Login: " << res->getString("Login") << std::endl;
+        std::cout << "Pin Code: " << res->getString("Pin") << std::endl;
     } else {
         std::cout << "Account not found." << std::endl;
     }
