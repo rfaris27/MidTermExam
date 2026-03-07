@@ -2,6 +2,34 @@
 #define ACCOUNT_H
 
 #include <string>
+#include <iostream>
+#include <limits>
+
+int getValidInt(const std::string &prompt) {
+    int value;
+    while (true) {
+        std::cout << prompt;
+        if (std::cin >> value) {
+            return value;
+        }
+        std::cout << "Invalid input. Please enter a number." << std::endl;
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+}
+
+double getValidDouble(const std::string &prompt) {
+    double value;
+    while (true) {
+        std::cout << prompt;
+        if (std::cin >> value) {
+            return value;
+        }
+        std::cout << "Invalid input. Please enter a number." << std::endl;
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+}
 
 class Account {
 private:

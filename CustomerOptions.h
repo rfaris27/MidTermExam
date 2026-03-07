@@ -18,9 +18,7 @@ std::string getCurrentDate() {
 }
 
 void withdrawCash(sql::Connection *con, Account &account) {
-    double amount;
-    std::cout << "Enter the withdrawal amount: ";
-    std::cin >> amount;
+    double amount = getValidDouble("Enter the withdrawal amount: ");
 
     if (amount <= 0) {
         std::cout << "Invalid amount." << std::endl;
@@ -52,9 +50,7 @@ void withdrawCash(sql::Connection *con, Account &account) {
 }
 
 void depositCash(sql::Connection *con, Account &account) {
-    double amount;
-    std::cout << "Enter the cash amount to deposit: ";
-    std::cin >> amount;
+    double amount = getValidDouble("Enter the cash amount to deposit: ");
 
     if (amount <= 0) {
         std::cout << "Invalid amount." << std::endl;
@@ -82,7 +78,7 @@ void depositCash(sql::Connection *con, Account &account) {
 
 void displayBalance(Account &account) {
     std::cout << "Account #" << account.getAccountNumber() << std::endl;
-    std::cout << "Holder: " << account.getHolderName() << std::endl;
+    std::cout << "Date: " << getCurrentDate() << std::endl;
     std::cout << std::fixed << std::setprecision(2);
     std::cout << "Balance: " << account.getBalance() << std::endl;
 }
@@ -96,8 +92,7 @@ void customerOptions(sql::Connection *con, Account &account) {
         std::cout << "3----Deposit Cash" << std::endl;
         std::cout << "4----Display Balance" << std::endl;
         std::cout << "5----Exit" << std::endl;
-        std::cout << "Enter your choice: ";
-        std::cin >> choice;
+        choice = getValidInt("Enter your choice number: ");
 
         switch (choice) {
             case 1:

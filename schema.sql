@@ -1,6 +1,6 @@
 USE ATM;
 
-CREATE TABLE accounts (
+CREATE TABLE IF NOT EXISTS accounts (
     AccountNumber INT AUTO_INCREMENT PRIMARY KEY,
     Login         VARCHAR(50)    UNIQUE NOT NULL,
     Pin           VARCHAR(5)     NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE accounts (
 
 -- Create an Admin user
 INSERT INTO accounts (Login, Pin, HolderName, Balance, Status, IsAdmin)
-VALUES ('Adnan123', '12345', 'Adnan', 0.00, 'Active', TRUE)
+VALUES ('Adnan123', '12345', 'Adnan', 160000.00, 'Active', TRUE)
 ON DUPLICATE KEY UPDATE Login = Login;
 
 

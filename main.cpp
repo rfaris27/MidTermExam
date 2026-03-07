@@ -23,10 +23,17 @@ int main() {
             Account account;
 
             if (loginUser(con, account)) {
-                if (account.isAdmin()) {
+                std::cout << "\nLogin as:" << std::endl;
+                std::cout << "1----Customer" << std::endl;
+                std::cout << "2----Administrator" << std::endl;
+                int role = getValidInt("Enter your choice number: ");
+
+                if (role == 2 && account.isAdmin()) {
                     adminOptions(con, account);
-                } else {
+                } else if (role == 1) {
                     customerOptions(con, account);
+                } else {
+                    std::cout << "Error: Invalid choice or access denied." << std::endl;
                 }
             } else {
                 std::cout << "Error: Invalid login or pin." << std::endl;

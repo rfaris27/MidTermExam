@@ -118,7 +118,7 @@ void createAccount(sql::Connection *con) {
 
 void deleteAccount(sql::Connection *con) {
     int accountNumber;
-    std::cout << "Enter account number to delete: ";
+    std::cout << "Enter the account number of the account you wish to delete: ";
     std::cin >> accountNumber;
 
     sql::PreparedStatement *check = con->prepareStatement(
@@ -127,7 +127,7 @@ void deleteAccount(sql::Connection *con) {
     sql::ResultSet *res = check->executeQuery();
 
     if (!res->next()) {
-        std::cout << "Account not found or cannot delete admin." << std::endl;
+        std::cout << "Account not found." << std::endl;
         delete res;
         delete check;
         return;
@@ -137,8 +137,8 @@ void deleteAccount(sql::Connection *con) {
     delete res;
     delete check;
 
-    std::cout << "You wish to delete the account held by " << holderName << std::endl;
-    std::cout << "Re-enter account number to confirm: ";
+    std::cout << "You wish to delete the account held by " << holderName
+              << ". If this information is correct, please re-enter the account number: ";
     int confirmNumber;
     std::cin >> confirmNumber;
 
@@ -153,8 +153,7 @@ void deleteAccount(sql::Connection *con) {
     pstmt->executeUpdate();
     delete pstmt;
 
-    std::cout << "Account #" << accountNumber << " held by "
-              << holderName << " has been deleted." << std::endl;
+    std::cout << "Account Deleted Successfully" << std::endl;
 }
 
 void updateAccount(sql::Connection *con) {
@@ -275,8 +274,7 @@ void adminOptions(sql::Connection *con, Account &account) {
         std::cout << "3----Update Account Information" << std::endl;
         std::cout << "4----Search for Account" << std::endl;
         std::cout << "6----Exit" << std::endl;
-        std::cout << "Enter your choice: ";
-        std::cin >> choice;
+        choice = getValidInt("Enter your choice number: ");
 
         switch (choice) {
             case 1:
