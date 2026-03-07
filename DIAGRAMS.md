@@ -8,46 +8,50 @@
 
 ```mermaid
 graph TD
-    subgraph ATM System
-        UC1[Login]
-        UC9[Select Role]
-        UC2[Withdraw Cash]
-        UC3[Deposit Cash]
-        UC4[Display Balance]
-        UC5[Create New Account]
-        UC6[Delete Existing Account]
-        UC7[Update Account Information]
-        UC8[Search for Account]
-        UC10[Logout / Exit]
-    end
+    UC1[Login]
 
     Customer((Customer))
     Admin((Administrator))
-    DB[(MySQL Database)]
 
-    Customer --> UC1
-    Customer --> UC9
+    UC1 --> Customer
+    UC1 --> Admin
+
+    subgraph Customer Options
+        UC2[Withdraw Cash]
+        UC3[Deposit Cash]
+        UC4[Display Balance]
+        UC5[Exit]
+    end
+
+    subgraph Admin Options
+        UC6[Create New Account]
+        UC7[Delete Existing Account]
+        UC8[Update Account Information]
+        UC9[Search for Account]
+        UC10[Exit]
+    end
+
     Customer --> UC2
     Customer --> UC3
     Customer --> UC4
-    Customer --> UC10
+    Customer --> UC5
 
-    Admin --> UC1
-    Admin --> UC9
-    Admin --> UC5
     Admin --> UC6
     Admin --> UC7
     Admin --> UC8
+    Admin --> UC9
     Admin --> UC10
+
+    DB[(MySQL Database)]
 
     UC1 -- "Reads credentials" --> DB
     UC2 -- "Updates balance" --> DB
     UC3 -- "Updates balance" --> DB
     UC4 -- "Reads balance" --> DB
-    UC5 -- "Inserts new account" --> DB
-    UC6 -- "Deletes account" --> DB
-    UC7 -- "Updates account info" --> DB
-    UC8 -- "Reads account info" --> DB
+    UC6 -- "Inserts new account" --> DB
+    UC7 -- "Deletes account" --> DB
+    UC8 -- "Updates account info" --> DB
+    UC9 -- "Reads account info" --> DB
 ```
 
 ### Use Case Descriptions
