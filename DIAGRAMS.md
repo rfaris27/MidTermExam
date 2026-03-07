@@ -100,14 +100,26 @@ flowchart TD
     J -- Yes --> L[Admin Menu]
     L --> L1{Choice}
     L1 -- 1 --> L2[Create Account]
+    L2 --> L2a[Enter New Customer Login]
+    L2a --> L2b[Enter New Customer Pin]
+    L2b --> L2c[Enter Holder Name, Balance, Status]
+    L2c --> L2d[Account Created with Assigned Number]
+    L2d --> L
     L1 -- 2 --> L3[Delete Account]
+    L3 --> L3a[Enter Account Number]
+    L3a --> L3b[Show Holder Name]
+    L3b --> L3c[Re-enter Account Number to Confirm]
+    L3c --> L
     L1 -- 3 --> L4[Update Account]
+    L4 --> L4a[Enter Account Number]
+    L4a --> L4b[Display Current Info]
+    L4b --> L4c[Enter New Values]
+    L4c --> L
     L1 -- 4 --> L5[Search Account]
+    L5 --> L5a[Enter Account Number]
+    L5a --> L5b[Display Account Info]
+    L5b --> L
     L1 -- 6 --> C
-    L2 --> L
-    L3 --> L
-    L4 --> L
-    L5 --> L
 ```
 
 ---
