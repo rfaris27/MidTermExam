@@ -78,12 +78,27 @@ flowchart TD
     A[Start Application] --> B[Connect to MySQL Database]
     B --> C[Display Login Screen - Any User]
     C --> D[Enter Login & Pin]
-    D --> E{Credentials Valid?}
-    E -- No --> F[Display Error]
+
+    subgraph "Model / DAL"
+        M1[Login.h - Verify Credentials]
+        M2[CustomerOptions.h - Process Transaction]
+        M3[AdminOptions.h - Manage Accounts]
+        M4[Account.h - Account Object]
+    end
+
+    subgraph "MySQL Database"
+        DB[(accounts table)]
+    end
+
+    D --> M1
+    M1 -- "SELECT WHERE Login & Pin" --> DB
+    DB -- "Return account data" --> M4
+    M1 -- Valid --> G[Select Role]
+    M1 -- Invalid --> F[Display Error]
     F --> C
-    E -- Yes --> G[Select Role]
+
     G --> H{Role Choice}
-    
+
     H -- Customer --> I[Customer Menu]
     I --> I1{Choice}
     I1 -- 1 --> I2[Withdraw Cash]
@@ -91,35 +106,45 @@ flowchart TD
     I1 -- 4 --> I4[Display Balance]
     I1 -- 5 --> LOGOUT1[Logout]
     LOGOUT1 --> C
-    I2 --> I
-    I3 --> I
-    I4 --> I
+
+    I2 -- "Enter Amount" --> M2
+    M2 -- "UPDATE Balance" --> DB
+    M2 -- "Show Receipt" --> I
+    I3 -- "Enter Amount" --> M2
+    I4 -- "Read from Account object" --> M4
+    M4 -- "Display Info" --> I
 
     H -- Administrator --> J{Is Admin?}
     J -- No --> K[Access Denied]
     K --> C
     J -- Yes --> L[Admin Menu]
     L --> L1{Choice}
+
     L1 -- 1 --> L2[Create Account]
-    L2 --> L2a[Enter New Customer Login]
-    L2a --> L2b[Enter New Customer Pin]
-    L2b --> L2c[Enter Holder Name, Balance, Status]
-    L2c --> L2d[Account Created with Assigned Number]
-    L2d --> L
+    L2 --> L2a[Enter New Customer Login, Pin, Name, Balance, Status]
+    L2a --> M3
+    M3 -- "INSERT new account" --> DB
+    M3 -- "Account Created with Assigned Number" --> L
+
     L1 -- 2 --> L3[Delete Account]
     L3 --> L3a[Enter Account Number]
-    L3a --> L3b[Show Holder Name]
-    L3b --> L3c[Re-enter Account Number to Confirm]
-    L3c --> L
+    L3a -- "SELECT holder name" --> DB
+    DB -- "Show Holder Name" --> L3b[Re-enter Account Number to Confirm]
+    L3b --> M3
+    M3 -- "DELETE account" --> DB
+
     L1 -- 3 --> L4[Update Account]
     L4 --> L4a[Enter Account Number]
-    L4a --> L4b[Display Current Info]
-    L4b --> L4c[Enter New Values]
-    L4c --> L
+    L4a -- "SELECT account info" --> DB
+    DB -- "Display Current Info" --> L4b[Enter New Values]
+    L4b --> M3
+    M3 -- "UPDATE account" --> DB
+
     L1 -- 4 --> L5[Search Account]
     L5 --> L5a[Enter Account Number]
-    L5a --> L5b[Display Account Info]
-    L5b --> L
+    L5a -- "SELECT account info" --> DB
+    DB -- "Display Account Info" --> L
+
     L1 -- 6 --> LOGOUT2[Logout]
     LOGOUT2 --> C
 ```
